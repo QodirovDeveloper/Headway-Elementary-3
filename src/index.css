@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+/* CSS o'zgaruvchilaridan Tailwind ranglari: bg-paper, text-muted, border-line, bg-ok-soft ... */
+@theme inline {
+  --font-sans: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+}
+
+/* Yorug' mavzu */
+:root {
+  --paper: #f5f6fb;
+  --card: #ffffff;
+  --ink: #1b2340;
+  --muted: #5d6684;
+  --line: #dde1ee;
+  --accent: #2f4bd8;
+  --accent-ink: #ffffff;
+  --accent-soft: #e6eafc;
+  --marker: #ffe36e;
+  --ok: #17804a;
+  --ok-soft: #ddf3e5;
+  --bad: #c23a2b;
+  --bad-soft: #fbe4e0;
+}
+
+/* Qorong'i mavzu — telefon sozlamasiga qarab o'zi almashadi */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #11152a;
+    --card: #1b2039;
+    --ink: #e9ecf8;
+    --muted: #a0a8c6;
+    --line: #2e3558;
+    --accent: #8fa2ff;
+    --accent-ink: #11152a;
+    --accent-soft: #252c55;
+    --marker: #6b5a12;
+    --ok: #5fd394;
+    --ok-soft: #163a29;
+    --bad: #ff8a7a;
+    --bad-soft: #43201c;
+    color-scheme: dark;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.5;
+  padding-top: env(safe-area-inset-top, 0px);
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+  touch-action: manipulation; /* telefonda ikki marta bosib kattalashtirish kechikishi bo'lmasin */
+}
+button:disabled {
+  cursor: default;
+}
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.safe-top {
+  top: env(safe-area-inset-top, 0px);
+}
+.safe-bottom {
+  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+}
+/* Sarlavhadagi "flomaster" chizig'i */
+.marker {
+  background: linear-gradient(transparent 58%, var(--marker) 58%);
+  color: inherit;
+  padding: 0 0.06em;
+}
+/* Javobdan keyin pastdan chiqadigan panel */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+.slide-up {
+  animation: slide-up 0.2s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
