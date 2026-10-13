@@ -1,7 +1,14 @@
 # Headway Elementary — Unit 3 test
 
-**Work hard, play hard!** bo'limi bo'yicha o'quvchini tekshiradigan interaktiv test (Headway Elementary, 4th edition, 22–29-betlar).
+**Work hard, play hard!** bo'limi bo'yicha o'quvchini tekshiradigan interaktiv test (Headway Elementary Student's Book, 4th edition).
 Sayt to'liq ingliz tilida, avvalo telefon uchun qilingan: bitta ekranda bitta savol, katta tugmalar, javobdan keyin pastda "Continue".
+
+Ikki qism — bosh sahifada alohida kartochkalar, har ekranda yorliq (CLASSWORK / HOMEWORK) va kitobdagi bet:
+
+| Qism | Kitobning qayeri | Nima |
+|------|------------------|------|
+| **Classwork** | old qismi, 22–29-betlar | sinfda o'qituvchi bilan ishlangan dars: 9 qism, 84 savol |
+| **Homework** | orqa qismi: Writing Unit 3 (106-bet), Grammar Reference (135–136-betlar) | uy vazifasi: 7 qism, 51 savol + o'z arizasini to'ldirish |
 
 React + TypeScript + Tailwind CSS + Vite.
 
@@ -14,7 +21,7 @@ npm run build      # tayyor sayt dist/ papkasiga (istalgan hostingga qo'yiladi)
 npm run typecheck  # faqat TypeScript tekshiruvi
 ```
 
-## Test tarkibi (9 qism, 84 savol)
+## Classwork (9 qism, 84 savol)
 
 | # | Qism | Turi |
 |---|------|------|
@@ -28,32 +35,51 @@ npm run typecheck  # faqat TypeScript tekshiruvi
 | 8 | Jamie or Shilpa? — "Town and country weekends" matni | variant |
 | 9 | Social expressions — kundalik iboralar | variant |
 
+## Homework (7 qism, 51 savol + yozma ish)
+
+| # | Qism | Bet | Turi |
+|---|------|-----|------|
+| 1 | Lena's application form — "Fit & Well" arizasi bo'yicha savollar (forma savol tepasida) | 106 | variant |
+| 2 | Form words — surname, BLOCK CAPITALS, tick, underline, dd/mm/yy, Mr/Mrs/Miss/Ms | 106 | variant |
+| 3 | Your application form — o'quvchi o'z arizasini to'ldiradi; tekshiruvdan o'tsa "o'zim haqimda" matni va Lena bilan solishtirish chiqadi | 106 | yozma ish (ballsiz) |
+| 4 | Present Simple: short answers (Grammar Reference 3.1) | 135 | variant |
+| 5 | Adverbs of frequency (3.2) — so'zni gapga qo'yib yozish | 136 | yozish |
+| 6 | like / love + -ing (3.3) | 136 | variant |
+| 7 | Prepositions — from/to, on, at, until, in, to, of | 136 | variant |
+
 ## Tuzilishi
 
 ```
 src/
   main.tsx, App.tsx      — kirish nuqtasi; App qaysi ekran ochiqligini (View) boshqaradi
-  types.ts               — Section, McItem, TypeItem, Answer, View turlari
-  data/sections.tsx      — hamma savollar (yangi savol qo'shish — faqat shu fayl)
+  types.ts               — Section, Group (class / home), McItem, TypeItem, Answer, View turlari
+  data/
+    classwork.tsx        — sinf ishi savollari (old qism, 22–29-betlar)
+    homework.tsx         — uy vazifasi savollari (orqa qism, 106 va 135–136-betlar)
+    sections.ts          — ikkalasini birlashtiradi; GROUPS — "Front/Back of the book" matnlari
   store.ts               — useAnswers(): javoblar, localStorage'ga saqlash
   lib/
     check.ts             — yozma javobni tekshirish ("doesn't" = "does not", katta-kichik harf, nuqta farq qilmaydi)
-    stats.ts             — bo'lim / umumiy ball, "davom etish" qayerdan boshlanadi
+    stats.ts             — bo'lim / guruh balli, keyingi bo'lim, "davom etish" qayerdan boshlanadi
+    form.ts              — ariza maydonlari, Lena namunasi, formani tekshirish, "o'zim haqimda" matni
   components/
-    ui.tsx               — BigButton, Score, PartList (bosh sahifa va natijalarda bitta ro'yxat)
-    TopBar.tsx           — tepadagi progress va ball
-    Question.tsx         — savol ekrani: variantlar yoki yozish maydoni
-    FeedbackBar.tsx      — pastdan chiqadigan "Correct! / Not quite." paneli
-    Home, PartEnd, Results — bosh sahifa, qism natijasi (xatolar ro'yxati), yakuniy natija
+    ui.tsx               — BigButton, GroupBadge, BookStrip (kitob chizig'i), PartHeader, Score, PartList
+    TopBar.tsx           — tepadagi progress va ball (ochiq guruh bo'yicha)
+    Question.tsx         — savol ekrani: variantlar yoki yozish maydoni, kerak bo'lsa Lenaning formasi
+    FormCard.tsx         — "Fit & Well" ariza formasi: faqat o'qish (Lena) yoki to'ldirish (o'quvchi)
+    Writing.tsx          — yozma ish: o'z arizasini to'ldirish va tayyor matn
+    FeedbackBar.tsx      — pastdan chiqadigan "Correct! / Not quite." paneli (+ izoh)
+    Home, PartEnd, Results — bosh sahifa (2 kartochka), qism natijasi (xatolar ro'yxati), guruh natijasi
 ```
 
 ## Savol qo'shish
 
-`src/data/sections.tsx` da kerakli bo'limga:
+`src/data/classwork.tsx` yoki `src/data/homework.tsx` da kerakli bo'limga:
 
 ```tsx
-mc('Where ___ you live?', ['do', 'does', 'are'], 0)          // variantli: to'g'ri javob raqami (0 dan)
-{ q: 'I like ___ golf. (play)', accept: ['playing'] }        // yoziladigan: accept[0] — namuna javob
+mc('Where ___ you live?', ['do', 'does', 'are'], 0)                       // variantli: to'g'ri javob raqami (0 dan)
+mc('Is she married?', ['Yes, she is.', "No, she isn't."], 1, { why: '…' }) // why — javobdan keyin chiqadigan izoh
+{ q: 'I like ___ golf. (play)', accept: ['playing'] }                     // yoziladigan: accept[0] — namuna javob
 ```
 
 ## Eslatmalar

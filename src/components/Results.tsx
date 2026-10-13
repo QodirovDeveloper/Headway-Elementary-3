@@ -1,12 +1,16 @@
-import { totalStats } from '../lib/stats';
-import type { Answers } from '../types';
-import { BigButton, Eyebrow, PartList, Score } from './ui';
+import { GROUPS, SECTIONS } from '../data/sections';
+import { groupStats, partsOf } from '../lib/stats';
+import type { Answers, Group } from '../types';
+import { BigButton, BookStrip, GroupBadge, PartList, Score } from './ui';
 
-type Props = { answers: Answers; onPick: (s: number) => void; onHome: () => void };
+type Props = { group: Group; answers: Answers; onPick: (s: number) => void; onHome: () => void };
 
-export function Results({ answers, onPick, onHome }: Props) {
-  const { done, got, total } = totalStats(answers);
-  const pct = Math.round((got / total) * 100);
+/** Bitta guruh (sinf ishi yoki uy vazifasi) natijasi */
+export function Results({ group, answers, onPick, onHome }: Props) {
+  const g = GROUPS[group];
+  const { done, got, total } = groupStats(answers, group);
+  const pct = total ? Math.round((got / total) * 100) : 0;
+  const writingLeft = partsOf(group).some((s) => SECTIONS[s].kind === 'writing' && !answers[SECTIONS[s].id]?.[0]?.ok);
   const msg =
     done < total
       ? `You answered ${done} of ${total} questions. Finish all the parts to get your full score.`
@@ -16,16 +20,22 @@ export function Results({ answers, onPick, onHome }: Props) {
           ? 'Good work! Try the parts with mistakes again.'
           : pct >= 50
             ? 'Not bad. Read Unit 3 again and repeat the difficult parts.'
-            : 'Keep practising. Read pages 22–23 again, then try again.';
+            : `Keep practising. Read ${g.pages} again, then try again.`;
 
   return (
     <>
-      <Eyebrow>Unit 3 · Final results</Eyebrow>
+      <div className="flex flex-wrap items-center gap-2">
+        <GroupBadge group={group} />
+        <span className="text-sm font-bold text-muted">{g.where} · Results</span>
+      </div>
+      <p className="mt-2 mb-0 text-base text-muted">{g.pages}</p>
+      <BookStrip group={group} />
       <Score got={got} total={total} />
-      <p className="mt-1.5 mb-5 text-muted">
+      <p className="mt-1.5 mb-2 text-muted">
         <b className="text-ink">{pct}%</b> correct. {msg}
       </p>
-      <PartList answers={answers} onPick={onPick} numbersOnly />
+      {writingLeft && <p className="m-0 font-bold text-hw">Don't forget the writing task: fill in your application form.</p>}
+      <PartList group={group} answers={answers} onPick={onPick} numbersOnly />
       <BigButton variant="ghost" className="mt-5" onClick={onHome}>
         Back to start
       </BigButton>

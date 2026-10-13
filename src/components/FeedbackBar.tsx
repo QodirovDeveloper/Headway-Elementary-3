@@ -1,7 +1,9 @@
 import { BigButton } from './ui';
 
-/** Javobdan keyin pastdan chiqadi: "Correct!" yoki to'g'ri javob + "Continue" */
-export function FeedbackBar({ ok, correct, label, onNext }: { ok: boolean; correct: string; label: string; onNext: () => void }) {
+type Props = { ok: boolean; correct: string; why?: string; label: string; onNext: () => void };
+
+/** Javobdan keyin pastdan chiqadi: "Correct!" yoki to'g'ri javob (+ izoh) + "Continue" */
+export function FeedbackBar({ ok, correct, why, label, onNext }: Props) {
   return (
     <div
       role="status"
@@ -13,6 +15,7 @@ export function FeedbackBar({ ok, correct, label, onNext }: { ok: boolean; corre
         <div>
           <div className={`text-[19px] font-bold ${ok ? 'text-ok' : 'text-bad'}`}>{ok ? 'Correct!' : 'Not quite.'}</div>
           {!ok && <div className="text-base">Correct answer: {correct}</div>}
+          {why && <div className="text-base text-ink">{why}</div>}
         </div>
         <BigButton variant={ok ? 'ok' : 'bad'} onClick={onNext} autoFocus>
           {label}

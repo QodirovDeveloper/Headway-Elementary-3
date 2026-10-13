@@ -4,6 +4,7 @@
 @theme inline {
   --font-sans: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
   --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-hand: "Caveat", "Segoe Print", "Comic Sans MS", cursive;
   --color-paper: var(--paper);
   --color-card: var(--card);
   --color-ink: var(--ink);
@@ -16,6 +17,13 @@
   --color-ok-soft: var(--ok-soft);
   --color-bad: var(--bad);
   --color-bad-soft: var(--bad-soft);
+  --color-hw: var(--hw);
+  --color-hw-ink: var(--hw-ink);
+  --color-hw-soft: var(--hw-soft);
+  --color-form-head: var(--form-head);
+  --color-form-head-ink: var(--form-head-ink);
+  --color-form-paper: var(--form-paper);
+  --color-pen: var(--pen);
 }
 
 /* Yorug' mavzu */
@@ -33,6 +41,15 @@
   --ok-soft: #ddf3e5;
   --bad: #c23a2b;
   --bad-soft: #fbe4e0;
+  /* Uy vazifasi (kitobning orqa qismi) — to'q sariq */
+  --hw: #b25600;
+  --hw-ink: #ffffff;
+  --hw-soft: #fdeedb;
+  /* "Fit & Well" ariza formasi */
+  --form-head: #16325c;
+  --form-head-ink: #ffffff;
+  --form-paper: #fff8d9;
+  --pen: #1f3fae;
 }
 
 /* Qorong'i mavzu — telefon sozlamasiga qarab o'zi almashadi */
@@ -51,6 +68,13 @@
     --ok-soft: #163a29;
     --bad: #ff8a7a;
     --bad-soft: #43201c;
+    --hw: #ffae5c;
+    --hw-ink: #2a1600;
+    --hw-soft: #3e2810;
+    --form-head: #2a4f8a;
+    --form-head-ink: #ffffff;
+    --form-paper: #26281f;
+    --pen: #a9bcff;
     color-scheme: dark;
   }
 }

@@ -3,7 +3,7 @@ import { SECTIONS } from '../data/sections';
 import { correctText, isTypedCorrect } from '../lib/check';
 import type { Answer, Answers, McItem, Section, TypeItem } from '../types';
 import { FeedbackBar } from './FeedbackBar';
-import { BigButton } from './ui';
+import { BigButton, BookLine, PartHeader } from './ui';
 
 type Props = {
   s: number;
@@ -11,35 +11,39 @@ type Props = {
   answers: Answers;
   onAnswer: (a: Answer) => void;
   onNext: () => void;
+  /** Lenaning formasi kabi rasm ochiqmi — savoldan savolga o'tganda eslab qolinadi */
+  figureOpen: boolean;
+  onFigureToggle: (open: boolean) => void;
 };
 
 /** Bitta savol ekrani. App uni `key={s-i}` bilan chizadi — har savolda holat yangidan boshlanadi */
-export function Question({ s, i, answers, onAnswer, onNext }: Props) {
+export function Question({ s, i, answers, onAnswer, onNext, figureOpen, onFigureToggle }: Props) {
   const section = SECTIONS[s];
+  if (section.kind === 'writing') return null;
   const sectionAnswers = answers[section.id] ?? {};
   const answer = sectionAnswers[i];
   const correct = correctText(section, i);
   const last = i + 1 === section.items.length;
-  const hint = section.kind === 'mc' ? section.items[i].hint : undefined;
+  const mcItem = section.kind === 'mc' ? section.items[i] : undefined;
 
   return (
     <>
-      <div className="flex justify-between text-sm font-bold text-muted tabular-nums">
-        <span>
-          Part {s + 1} of {SECTIONS.length}
-        </span>
-        <span>
-          {i + 1} / {section.items.length}
-        </span>
-      </div>
+      <PartHeader s={s} right={`${i + 1} / ${section.items.length}`} />
       <Dots section={section} answers={sectionAnswers} current={i} />
 
       <h3 className="m-0 font-display text-[22px] font-extrabold">{section.title}</h3>
-      <p className="mt-0.5 mb-3 text-base text-muted">{section.task}</p>
+      <p className="mt-0.5 mb-1 text-base text-muted">{section.task}</p>
+      <BookLine s={s} />
       {section.tip && <Tip initialOpen={i === 0 && !answer}>{section.tip}</Tip>}
+      {section.figure && (
+        <details open={figureOpen} onToggle={(e) => onFigureToggle(e.currentTarget.open)} className="mb-4">
+          <summary className="flex min-h-11 cursor-pointer items-center font-bold text-accent">{section.figure.label}</summary>
+          <div className="pt-1">{section.figure.content}</div>
+        </details>
+      )}
 
       <Prompt text={section.items[i].q} filled={answer && { text: correct, ok: answer.ok }} />
-      {hint && <p className="-mt-3 mb-5 text-lg text-muted">— {hint}</p>}
+      {mcItem?.hint && <p className="-mt-3 mb-5 text-lg text-muted">— {mcItem.hint}</p>}
 
       {section.kind === 'mc' ? (
         <Options item={section.items[i]} answer={answer} onAnswer={onAnswer} />
@@ -47,7 +51,9 @@ export function Question({ s, i, answers, onAnswer, onNext }: Props) {
         <TypeIn item={section.items[i]} placeholder={section.placeholder} answer={answer} onAnswer={onAnswer} />
       )}
 
-      {answer && <FeedbackBar ok={answer.ok} correct={correct} label={last ? 'See part score' : 'Continue'} onNext={onNext} />}
+      {answer && (
+        <FeedbackBar ok={answer.ok} correct={correct} why={mcItem?.why} label={last ? 'See part score' : 'Continue'} onNext={onNext} />
+      )}
     </>
   );
 }

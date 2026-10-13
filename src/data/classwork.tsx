@@ -1,14 +1,20 @@
-import type { McItem, Section } from '../types';
+import type { McItem, SectionData } from '../types';
 
 /** Qisqa yozuv: mc('Where ___ you live?', ['do', 'does', 'are'], 0) */
-const mc = (q: string, options: string[], answer: number, hint?: string): McItem => ({ q, options, answer, hint });
+export const mc = (q: string, options: string[], answer: number, extra?: Pick<McItem, 'hint' | 'why'>): McItem => ({
+  q,
+  options,
+  answer,
+  ...extra,
+});
 const WHO = ['Jamie', 'Shilpa', 'Both'];
 
-/** Headway Elementary (4th ed.), Unit 3 "Work hard, play hard!", 22–29-betlar asosida */
-export const SECTIONS: Section[] = [
+/** Sinf ishi: Headway Elementary (4th ed.), Unit 3 "Work hard, play hard!", kitobning old qismi, 22–29-betlar */
+export const CLASSWORK: SectionData[] = [
   {
     id: 'story',
     title: "Marco's two jobs",
+    pages: 'page 22',
     task: 'Marco has two jobs. Choose the correct verb.',
     kind: 'mc',
     items: [
@@ -28,6 +34,7 @@ export const SECTIONS: Section[] = [
   {
     id: 'qneg',
     title: 'Questions & negatives',
+    pages: 'page 23',
     task: 'Choose the correct word.',
     tip: (
       <>
@@ -53,22 +60,24 @@ export const SECTIONS: Section[] = [
   {
     id: 'qwords',
     title: 'Question words',
+    pages: 'page 24',
     task: 'Choose the question word. The answer helps you.',
     kind: 'mc',
     items: [
-      mc('___ do you get up?', ['Where', 'What time', 'Who'], 1, "At about 7 o'clock."),
-      mc('___ do you go on holiday?', ['Where', 'When', 'How'], 0, 'To Turkey or Egypt.'),
-      mc('___ do you do on Sundays?', ['Why', 'Who', 'What'], 2, 'I always relax.'),
-      mc('___ do you do your homework?', ['When', 'Where', 'What'], 0, 'When I get home.'),
-      mc('___ do you live with?', ['What', 'Who', 'How'], 1, 'My mother and my brothers.'),
-      mc('___ do you like your job?', ['How', 'Why', 'When'], 1, "Because it's interesting."),
-      mc('___ do you travel to school?', ['How', 'What', 'Who'], 0, 'Usually by bus.'),
-      mc('___ you go out on Friday evenings?', ['Are', 'Does', 'Do'], 2, 'Yes, I do sometimes.'),
+      mc('___ do you get up?', ['Where', 'What time', 'Who'], 1, { hint: "At about 7 o'clock." }),
+      mc('___ do you go on holiday?', ['Where', 'When', 'How'], 0, { hint: 'To Turkey or Egypt.' }),
+      mc('___ do you do on Sundays?', ['Why', 'Who', 'What'], 2, { hint: 'I always relax.' }),
+      mc('___ do you do your homework?', ['When', 'Where', 'What'], 0, { hint: 'When I get home.' }),
+      mc('___ do you live with?', ['What', 'Who', 'How'], 1, { hint: 'My mother and my brothers.' }),
+      mc('___ do you like your job?', ['How', 'Why', 'When'], 1, { hint: "Because it's interesting." }),
+      mc('___ do you travel to school?', ['How', 'What', 'Who'], 0, { hint: 'Usually by bus.' }),
+      mc('___ you go out on Friday evenings?', ['Are', 'Does', 'Do'], 2, { hint: 'Yes, I do sometimes.' }),
     ],
   },
   {
     id: 'opp',
     title: 'Make it opposite',
+    pages: 'page 24',
     task: 'Write the opposite: positive → negative, negative → positive.',
     tip: (
       <>
@@ -94,6 +103,7 @@ export const SECTIONS: Section[] = [
   {
     id: 'freq',
     title: 'How often?',
+    pages: 'page 23',
     task: 'Choose the correct answer.',
     tip: (
       <>
@@ -120,6 +130,7 @@ export const SECTIONS: Section[] = [
   {
     id: 'free',
     title: 'Free time',
+    pages: 'pages 24–25',
     task: 'Choose the best word.',
     kind: 'mc',
     items: [
@@ -140,6 +151,7 @@ export const SECTIONS: Section[] = [
   {
     id: 'ing',
     title: 'like + -ing',
+    pages: 'page 25',
     task: 'Write the verb in the -ing form.',
     tip: (
       <>
@@ -164,6 +176,7 @@ export const SECTIONS: Section[] = [
   {
     id: 'read',
     title: 'Jamie or Shilpa?',
+    pages: 'pages 26–27',
     task: 'Remember the reading “Town and country weekends”.',
     kind: 'mc',
     items: [
@@ -184,6 +197,7 @@ export const SECTIONS: Section[] = [
   {
     id: 'social',
     title: 'Social expressions',
+    pages: 'page 29',
     task: 'Choose the best reply.',
     kind: 'mc',
     items: [
@@ -203,5 +217,3 @@ export const SECTIONS: Section[] = [
     ],
   },
 ];
-
-export const TOTAL = SECTIONS.reduce((n, s) => n + s.items.length, 0);

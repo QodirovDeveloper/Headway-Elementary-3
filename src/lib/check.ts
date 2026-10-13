@@ -10,6 +10,7 @@ export function normalize(text: string): string {
     .replace(/\bisn't\b/g, 'is not')
     .replace(/\baren't\b/g, 'are not')
     .replace(/\bi'm\b/g, 'i am')
+    .replace(/\b(he|she|it)'s\b/g, '$1 is')
     .replace(/\bwe're\b/g, 'we are')
     .replace(/\bthey're\b/g, 'they are')
     .replace(/[^a-z' ]/g, ' ')
@@ -26,5 +27,5 @@ export function correctText(section: Section, i: number): string {
     const item = section.items[i];
     return item.options[item.answer];
   }
-  return section.items[i].accept[0];
+  return section.kind === 'type' ? section.items[i].accept[0] : '';
 }
