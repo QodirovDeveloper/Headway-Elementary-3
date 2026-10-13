@@ -105,7 +105,7 @@ function Row({ field, form, set }: { field: FieldDef; form: FormData; set?: (pat
         id={id}
         value={value}
         onChange={(e) => put(e.target.value.toUpperCase())}
-        placeholder={kind === 'choice' ? 'tap below' : 'type here'}
+        placeholder={kind === 'choice' ? 'tap or type' : 'type here'}
         autoCapitalize="characters"
         autoComplete="off"
         autoCorrect="off"

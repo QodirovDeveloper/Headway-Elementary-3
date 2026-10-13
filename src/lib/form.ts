@@ -24,7 +24,8 @@ export const FIELDS = [
     label: 'Nationality',
     ask: 'Choose your nationality.',
     input: 'choice',
-    choices: ['UZBEK', 'RUSSIAN', 'KAZAKH', 'TAJIK', 'KYRGYZ'],
+    // Kitobdagi (Unit 1–3) odamlarning millatlari
+    choices: ['AUSTRALIAN', 'AMERICAN', 'ENGLISH', 'FRENCH', 'ITALIAN', 'SPANISH', 'INDIAN'],
   },
   { key: 'address', label: 'Address' },
   {
@@ -32,7 +33,8 @@ export const FIELDS = [
     label: 'Town/City',
     ask: 'Choose your town or city.',
     input: 'choice',
-    choices: ['TASHKENT', 'SAMARKAND', 'BUKHARA', 'NAMANGAN', 'ANDIJAN', 'FERGANA'],
+    // Kitobdagi (Unit 1–3) shaharlar
+    choices: ['SHEFFIELD', 'LONDON', 'BRISTOL', 'OXFORD', 'NEW YORK', 'CHICAGO', 'SYDNEY', 'MUMBAI'],
   },
   { key: 'postcode', label: 'Post Code' },
   { key: 'email', label: 'Email address' },
