@@ -13,14 +13,14 @@ export function Results({ group, answers, onPick, onHome }: Props) {
   const writingLeft = partsOf(group).some((s) => SECTIONS[s].kind === 'writing' && !answers[SECTIONS[s].id]?.[0]?.ok);
   const msg =
     done < total
-      ? `You answered ${done} of ${total} questions. Finish all the parts to get your full score.`
+      ? `${done} of ${total} answered. Finish all parts.`
       : pct >= 90
-        ? 'Excellent! You know Unit 3 very well.'
+        ? 'Excellent!'
         : pct >= 70
-          ? 'Good work! Try the parts with mistakes again.'
+          ? 'Good work!'
           : pct >= 50
-            ? 'Not bad. Read Unit 3 again and repeat the difficult parts.'
-            : `Keep practising. Read ${g.pages} again, then try again.`;
+            ? 'Not bad. Try again.'
+            : `Keep practising: ${g.pages}.`;
 
   return (
     <>
@@ -34,7 +34,7 @@ export function Results({ group, answers, onPick, onHome }: Props) {
       <p className="mt-1.5 mb-2 text-muted">
         <b className="text-ink">{pct}%</b> correct. {msg}
       </p>
-      {writingLeft && <p className="m-0 font-bold text-hw">Don't forget the writing task: fill in your application form.</p>}
+      {writingLeft && <p className="m-0 font-bold text-hw">Don't forget: fill in your form.</p>}
       <PartList group={group} answers={answers} onPick={onPick} numbersOnly />
       <BigButton variant="ghost" className="mt-5" onClick={onHome}>
         Back to start

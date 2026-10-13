@@ -1,9 +1,9 @@
 import { useState, type ReactNode } from 'react';
 import { SECTIONS } from '../data/sections';
-import { correctText, isTypedCorrect } from '../lib/check';
-import type { Answer, Answers, McItem, Section, TypeItem } from '../types';
+import { correctText } from '../lib/check';
+import type { Answer, Answers, McItem, Section } from '../types';
 import { FeedbackBar } from './FeedbackBar';
-import { BigButton, BookLine, PartHeader } from './ui';
+import { BookLine, PartHeader } from './ui';
 
 type Props = {
   s: number;
@@ -24,7 +24,7 @@ export function Question({ s, i, answers, onAnswer, onNext, figureOpen, onFigure
   const answer = sectionAnswers[i];
   const correct = correctText(section, i);
   const last = i + 1 === section.items.length;
-  const mcItem = section.kind === 'mc' ? section.items[i] : undefined;
+  const item = section.items[i];
 
   return (
     <>
@@ -42,18 +42,12 @@ export function Question({ s, i, answers, onAnswer, onNext, figureOpen, onFigure
         </details>
       )}
 
-      <Prompt text={section.items[i].q} filled={answer && { text: correct, ok: answer.ok }} />
-      {mcItem?.hint && <p className="-mt-3 mb-5 text-lg text-muted">— {mcItem.hint}</p>}
+      <Prompt text={item.q} filled={answer && { text: correct, ok: answer.ok }} />
+      {item.hint && <p className="-mt-3 mb-5 text-lg text-muted">— {item.hint}</p>}
 
-      {section.kind === 'mc' ? (
-        <Options item={section.items[i]} answer={answer} onAnswer={onAnswer} />
-      ) : (
-        <TypeIn item={section.items[i]} placeholder={section.placeholder} answer={answer} onAnswer={onAnswer} />
-      )}
+      <Options item={item} answer={answer} onAnswer={onAnswer} />
 
-      {answer && (
-        <FeedbackBar ok={answer.ok} correct={correct} why={mcItem?.why} label={last ? 'See part score' : 'Continue'} onNext={onNext} />
-      )}
+      {answer && <FeedbackBar ok={answer.ok} correct={correct} why={item.why} label={last ? 'See part score' : 'Continue'} onNext={onNext} />}
     </>
   );
 }
@@ -131,58 +125,5 @@ function Options({ item, answer, onAnswer }: { item: McItem; answer?: Answer; on
         );
       })}
     </div>
-  );
-}
-
-function TypeIn({
-  item,
-  placeholder,
-  answer,
-  onAnswer,
-}: {
-  item: TypeItem;
-  placeholder: string;
-  answer?: Answer;
-  onAnswer: (a: Answer) => void;
-}) {
-  const [value, setValue] = useState(answer?.given ?? '');
-  const [hint, setHint] = useState('');
-
-  const check = () => {
-    const given = value.trim();
-    if (!given) return setHint('Write your answer first.');
-    (document.activeElement as HTMLElement | null)?.blur(); // telefon klaviaturasi yopilsin
-    onAnswer({ given, ok: isTypedCorrect(item, given) });
-  };
-
-  const look = !answer ? 'border-line bg-card' : answer.ok ? 'border-ok bg-ok-soft' : 'border-bad bg-bad-soft line-through';
-
-  return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        check();
-      }}
-    >
-      <input
-        type="text"
-        value={value}
-        disabled={!!answer}
-        onChange={(e) => {
-          setValue(e.target.value);
-          setHint('');
-        }}
-        placeholder={placeholder}
-        aria-label={placeholder}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="off"
-        spellCheck={false}
-        enterKeyHint="done"
-        className={`mb-2.5 min-h-14 w-full rounded-2xl border-2 px-4 py-3.5 text-[19px] text-ink ${look}`}
-      />
-      <p className="mb-1.5 min-h-[1.4em] text-[15px] text-bad">{hint}</p>
-      {!answer && <BigButton type="submit">Check</BigButton>}
-    </form>
   );
 }

@@ -2,6 +2,7 @@
 
 **Work hard, play hard!** bo'limi bo'yicha o'quvchini tekshiradigan interaktiv test (Headway Elementary Student's Book, 4th edition).
 Sayt to'liq ingliz tilida, avvalo telefon uchun qilingan: bitta ekranda bitta savol, katta tugmalar, javobdan keyin pastda "Continue".
+**Yozish minimal** (Z avlodi uchun): hamma savollar bosib javob beriladi; arizada faqat ism va familiya yoziladi, qolgani tugmalar bilan.
 
 Ikki qism — bosh sahifada alohida kartochkalar, har ekranda yorliq (CLASSWORK / HOMEWORK) va kitobdagi bet:
 
@@ -28,10 +29,10 @@ npm run typecheck  # faqat TypeScript tekshiruvi
 | 1 | Marco's two jobs — matnga fe'l qo'yish | variant |
 | 2 | Questions & negatives — do / does / don't / doesn't | variant |
 | 3 | Question words — What time, Where, Who, Why, How | variant |
-| 4 | Make it opposite — gapni teskarisiga aylantirish | yozish |
+| 4 | Make it opposite — gapni teskarisiga aylantirish | variant |
 | 5 | How often? — always … never, so'z tartibi | variant |
 | 6 | Free time — bo'sh vaqt, so'z birikmalari, oylar, fasllar | variant |
-| 7 | like + -ing — playing, running, dancing | yozish |
+| 7 | like + -ing — playing, running, dancing (to'g'ri yozilishini tanlash) | variant |
 | 8 | Jamie or Shilpa? — "Town and country weekends" matni | variant |
 | 9 | Social expressions — kundalik iboralar | variant |
 
@@ -41,9 +42,9 @@ npm run typecheck  # faqat TypeScript tekshiruvi
 |---|------|-----|------|
 | 1 | Lena's application form — "Fit & Well" arizasi bo'yicha savollar (forma savol tepasida) | 106 | variant |
 | 2 | Form words — surname, BLOCK CAPITALS, tick, underline, dd/mm/yy, Mr/Mrs/Miss/Ms | 106 | variant |
-| 3 | Your application form — o'quvchi o'z arizasini to'ldiradi; tekshiruvdan o'tsa "o'zim haqimda" matni va Lena bilan solishtirish chiqadi | 106 | yozma ish (ballsiz) |
+| 3 | Your application form — o'quvchi o'z arizasini to'ldiradi (ism/familiya yoziladi; title, sana dd/mm/yy, millat, shahar, sport, imzo — bosish bilan); tekshiruvdan o'tsa "o'zim haqimda" matni va Lena bilan solishtirish chiqadi | 106 | yozma ish (ballsiz) |
 | 4 | Present Simple: short answers (Grammar Reference 3.1) | 135 | variant |
-| 5 | Adverbs of frequency (3.2) — so'zni gapga qo'yib yozish | 136 | yozish |
+| 5 | Adverbs of frequency (3.2) — so'z gapda qayerda turadi | 136 | variant |
 | 6 | like / love + -ing (3.3) | 136 | variant |
 | 7 | Prepositions — from/to, on, at, until, in, to, of | 136 | variant |
 
@@ -52,20 +53,20 @@ npm run typecheck  # faqat TypeScript tekshiruvi
 ```
 src/
   main.tsx, App.tsx      — kirish nuqtasi; App qaysi ekran ochiqligini (View) boshqaradi
-  types.ts               — Section, Group (class / home), McItem, TypeItem, Answer, View turlari
+  types.ts               — Section, Group (class / home), McItem, Answer, View turlari
   data/
     classwork.tsx        — sinf ishi savollari (old qism, 22–29-betlar)
     homework.tsx         — uy vazifasi savollari (orqa qism, 106 va 135–136-betlar)
     sections.ts          — ikkalasini birlashtiradi; GROUPS — "Front/Back of the book" matnlari
   store.ts               — useAnswers(): javoblar, localStorage'ga saqlash
   lib/
-    check.ts             — yozma javobni tekshirish ("doesn't" = "does not", katta-kichik harf, nuqta farq qilmaydi)
+    check.ts             — to'g'ri javob matni
     stats.ts             — bo'lim / guruh balli, keyingi bo'lim, "davom etish" qayerdan boshlanadi
-    form.ts              — ariza maydonlari, Lena namunasi, formani tekshirish, "o'zim haqimda" matni
+    form.ts              — ariza maydonlari (qaysi biri yoziladi / bosiladi), Lena namunasi, tekshirish, "o'zim haqimda" matni
   components/
     ui.tsx               — BigButton, GroupBadge, BookStrip (kitob chizig'i), PartHeader, Score, PartList
     TopBar.tsx           — tepadagi progress va ball (ochiq guruh bo'yicha)
-    Question.tsx         — savol ekrani: variantlar yoki yozish maydoni, kerak bo'lsa Lenaning formasi
+    Question.tsx         — savol ekrani: variantlar, kerak bo'lsa Lenaning formasi
     FormCard.tsx         — "Fit & Well" ariza formasi: faqat o'qish (Lena) yoki to'ldirish (o'quvchi)
     Writing.tsx          — yozma ish: o'z arizasini to'ldirish va tayyor matn
     FeedbackBar.tsx      — pastdan chiqadigan "Correct! / Not quite." paneli (+ izoh)
@@ -79,7 +80,6 @@ src/
 ```tsx
 mc('Where ___ you live?', ['do', 'does', 'are'], 0)                       // variantli: to'g'ri javob raqami (0 dan)
 mc('Is she married?', ['Yes, she is.', "No, she isn't."], 1, { why: '…' }) // why — javobdan keyin chiqadigan izoh
-{ q: 'I like ___ golf. (play)', accept: ['playing'] }                     // yoziladigan: accept[0] — namuna javob
 ```
 
 ## Eslatmalar

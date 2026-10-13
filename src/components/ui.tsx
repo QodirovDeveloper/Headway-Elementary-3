@@ -85,7 +85,7 @@ export function BookLine({ s }: { s: number }) {
   const sec = SECTIONS[s];
   return (
     <p className="m-0 mb-3 text-sm text-muted">
-      Student's Book · {sec.pages} · {GROUPS[sec.group].where.toLowerCase()}
+      {sec.pages} · {GROUPS[sec.group].where.toLowerCase()}
     </p>
   );
 }

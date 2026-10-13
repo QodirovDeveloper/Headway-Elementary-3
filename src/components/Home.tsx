@@ -20,8 +20,7 @@ export function Home({ answers, onStart, onPick, onErase }: Props) {
         Work hard, <mark className="marker">play hard!</mark>
       </h1>
       <p className="mb-5 text-muted">
-        Unit 3 has two parts. <b className="text-ink">Classwork</b> is from the front of your book.{' '}
-        <b className="text-ink">Homework</b> is from the back of your book.
+        <b className="text-ink">Classwork</b> = front of the book. <b className="text-ink">Homework</b> = back of the book.
       </p>
 
       <div className="flex flex-col gap-5">

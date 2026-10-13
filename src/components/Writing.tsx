@@ -64,7 +64,7 @@ export function Writing({ s, answers, onSave, nextLabel, onNext }: Props) {
 
       {problems.length > 0 && (
         <div ref={problemsRef} className="mt-4 rounded-xl border-2 border-bad bg-bad-soft px-4 py-3 text-base" role="alert">
-          <p className="m-0 mb-1 font-bold text-bad">Please check your form:</p>
+          <p className="m-0 mb-1 font-bold text-bad">Not finished:</p>
           <ul className="m-0 list-disc pl-5">
             {problems.map((p) => (
               <li key={p}>{p}</li>
@@ -82,11 +82,11 @@ export function Writing({ s, answers, onSave, nextLabel, onNext }: Props) {
       {done && (
         <div ref={textRef} className="mt-5 scroll-mt-20">
           <div className="rounded-2xl border-2 border-ok bg-ok-soft px-4 py-4">
-            <p className="m-0 mb-2 text-[19px] font-bold text-ok">Well done! Your form is correct.</p>
+            <p className="m-0 mb-2 text-[19px] font-bold text-ok">Well done!</p>
             <p className="m-0 mb-1 text-sm font-bold tracking-[0.06em] text-muted uppercase">Your text</p>
             <p className="m-0 text-lg leading-relaxed">{describe(form).join(' ')}</p>
           </div>
-          <p className="mt-2 mb-4 text-base text-muted">Read your text aloud. Then show it to your teacher.</p>
+          <p className="mt-2 mb-4 text-base text-muted">Read it aloud. Show your teacher.</p>
           <BigButton variant="homework" onClick={onNext}>
             {nextLabel}
           </BigButton>

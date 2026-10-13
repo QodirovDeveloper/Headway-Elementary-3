@@ -15,7 +15,7 @@ export const CLASSWORK: SectionData[] = [
     id: 'story',
     title: "Marco's two jobs",
     pages: 'page 22',
-    task: 'Marco has two jobs. Choose the correct verb.',
+    task: 'Choose the verb.',
     kind: 'mc',
     items: [
       mc("Hi, I'm Marco. I'm 27 years old and I ___ in London.", ['live', 'work', 'stay', 'cook'], 0),
@@ -61,7 +61,7 @@ export const CLASSWORK: SectionData[] = [
     id: 'qwords',
     title: 'Question words',
     pages: 'page 24',
-    task: 'Choose the question word. The answer helps you.',
+    task: 'Choose the question word.',
     kind: 'mc',
     items: [
       mc('___ do you get up?', ['Where', 'What time', 'Who'], 1, { hint: "At about 7 o'clock." }),
@@ -78,26 +78,31 @@ export const CLASSWORK: SectionData[] = [
     id: 'opp',
     title: 'Make it opposite',
     pages: 'page 24',
-    task: 'Write the opposite: positive → negative, negative → positive.',
+    task: 'Choose the opposite.',
     tip: (
       <>
-        Example:
-        <br />
         <b>I don't like cooking.</b> → <b>I like cooking.</b>
         <br />
         <b>She speaks French.</b> → <b>She doesn't speak French.</b>
       </>
     ),
-    kind: 'type',
-    placeholder: 'Write the opposite sentence',
+    kind: 'mc',
     items: [
-      { q: "She doesn't speak Spanish.", accept: ['She speaks Spanish.'] },
-      { q: 'They want to learn English.', accept: ["They don't want to learn English."] },
-      { q: 'I like playing golf.', accept: ["I don't like playing golf."] },
-      { q: "We don't work on Sundays.", accept: ['We work on Sundays.'] },
-      { q: 'He lives in New York.', accept: ["He doesn't live in New York."] },
-      { q: "You don't go to the gym.", accept: ['You go to the gym.'] },
-      { q: 'I work at home because I have a computer.', accept: ["I don't work at home because I don't have a computer."] },
+      mc("She doesn't speak Spanish.", ['She speaks Spanish.', 'She speak Spanish.', "She don't speak Spanish."], 0),
+      mc('They want to learn English.', ["They doesn't want to learn English.", "They don't want to learn English.", 'They not want to learn English.'], 1),
+      mc('I like playing golf.', ["I don't like playing golf.", "I doesn't like playing golf.", 'I not like playing golf.'], 0),
+      mc("We don't work on Sundays.", ['We works on Sundays.', 'We not work on Sundays.', 'We work on Sundays.'], 2),
+      mc('He lives in New York.', ["He don't live in New York.", "He doesn't live in New York.", "He doesn't lives in New York."], 1),
+      mc("You don't go to the gym.", ['You go to the gym.', 'You goes to the gym.', 'You going to the gym.'], 0),
+      mc(
+        'I work at home because I have a computer.',
+        [
+          "I don't work at home because I don't have a computer.",
+          "I doesn't work at home because I doesn't have a computer.",
+          'I not work at home because I not have a computer.',
+        ],
+        0,
+      ),
     ],
   },
   {
@@ -152,7 +157,7 @@ export const CLASSWORK: SectionData[] = [
     id: 'ing',
     title: 'like + -ing',
     pages: 'page 25',
-    task: 'Write the verb in the -ing form.',
+    task: 'Choose the -ing form.',
     tip: (
       <>
         <b>like / love / enjoy + verb-ing</b>
@@ -160,24 +165,23 @@ export const CLASSWORK: SectionData[] = [
         play → play<b>ing</b>, danc<b>e</b> → danc<b>ing</b>, ru<b>n</b> → ru<b>nn</b>ing
       </>
     ),
-    kind: 'type',
-    placeholder: 'Write the -ing form',
+    kind: 'mc',
     items: [
-      { q: 'I like ___ golf. (play)', accept: ['playing'] },
-      { q: "She doesn't like ___. (run)", accept: ['running'] },
-      { q: 'We love ___ on Friday nights. (dance)', accept: ['dancing'] },
-      { q: 'Do you like ___ in the sea? (swim)', accept: ['swimming'] },
-      { q: 'He enjoys ___ in the park. (cycle)', accept: ['cycling'] },
-      { q: 'They like ___ to music. (listen)', accept: ['listening'] },
-      { q: 'I love ___ Indian food. (cook)', accept: ['cooking'] },
-      { q: 'My dad likes ___ cards. (play)', accept: ['playing'] },
+      mc('I like ___ golf.', ['playing', 'plaing', 'plays'], 0),
+      mc("She doesn't like ___.", ['runing', 'running', 'runs'], 1),
+      mc('We love ___ on Friday nights.', ['danceing', 'dancing', 'dances'], 1),
+      mc('Do you like ___ in the sea?', ['swimming', 'swiming', 'swims'], 0),
+      mc('He enjoys ___ in the park.', ['cycleing', 'cycles', 'cycling'], 2),
+      mc('They like ___ to music.', ['listenning', 'listening', 'listen'], 1),
+      mc('I love ___ Indian food.', ['cooking', 'cookking', 'cook'], 0),
+      mc('My dad likes ___ cards.', ['play', 'playing', 'plaing'], 1),
     ],
   },
   {
     id: 'read',
     title: 'Jamie or Shilpa?',
     pages: 'pages 26–27',
-    task: 'Remember the reading “Town and country weekends”.',
+    task: 'Reading: Town and country weekends.',
     kind: 'mc',
     items: [
       mc('Who lives in a flat in north-west London?', WHO, 0),

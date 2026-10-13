@@ -13,7 +13,7 @@ export const HOMEWORK: SectionData[] = [
   {
     id: 'hw-lena',
     title: "Lena's application form",
-    task: "Read Lena's form. Then answer the questions about her.",
+    task: "Look at Lena's form and answer.",
     pages: 'page 106',
     figure: { label: "Lena's application form", content: <FormCard form={LENA} /> },
     kind: 'mc',
@@ -38,7 +38,7 @@ export const HOMEWORK: SectionData[] = [
   {
     id: 'hw-words',
     title: 'Form words',
-    task: 'What do these words on a form mean?',
+    task: 'What does it mean?',
     pages: 'page 106',
     kind: 'mc',
     items: [
@@ -57,22 +57,16 @@ export const HOMEWORK: SectionData[] = [
   {
     id: 'hw-myform',
     title: 'Your application form',
-    task: "Fill in the same form for you. Then read your text about you and Lena.",
+    task: 'Fill in the form for you. Type only your name, then tap.',
     pages: 'page 106',
-    tip: (
-      <>
-        Write in <b>BLOCK CAPITALS</b> (LIKE THIS). Sign with your normal writing.
-        <br />
-        Your form stays on this phone. You can use invented details.
-      </>
-    ),
+    tip: 'A made-up name is OK. Your form stays on this phone.',
     kind: 'writing',
     items: [],
   },
   {
     id: 'hw-gr31',
     title: 'Present Simple: short answers',
-    task: 'Grammar Reference 3.1. Choose the correct word.',
+    task: 'Choose the word.',
     pages: 'page 135',
     tip: (
       <>
@@ -95,7 +89,7 @@ export const HOMEWORK: SectionData[] = [
   {
     id: 'hw-gr32',
     title: 'Adverbs of frequency',
-    task: 'Grammar Reference 3.2. Write the sentence with the word in brackets.',
+    task: 'Where does the word go? Choose.',
     pages: 'page 136',
     tip: (
       <>
@@ -108,22 +102,23 @@ export const HOMEWORK: SectionData[] = [
         <b>Never</b> and <b>always</b> can't.
       </>
     ),
-    kind: 'type',
-    placeholder: 'Write the full sentence',
+    kind: 'mc',
     items: [
-      { q: 'I work late. (sometimes)', accept: ['I sometimes work late.', 'Sometimes I work late.', 'I work late sometimes.'] },
-      { q: 'We stop work at 6.00. (always)', accept: ['We always stop work at 6.00.'] },
-      { q: 'She goes out on Sundays. (never)', accept: ['She never goes out on Sundays.'] },
-      { q: "She's late. (always)", accept: ["She's always late."] },
-      { q: "I'm hungry in the morning. (never)", accept: ["I'm never hungry in the morning."] },
-      { q: 'I walk to school. (usually)', accept: ['I usually walk to school.', 'Usually I walk to school.', 'I walk to school usually.'] },
-      { q: 'I eat in a restaurant. (often)', accept: ['I often eat in a restaurant.'] },
+      mc('sometimes', ['I work sometimes late.', 'I sometimes work late.', 'Work I sometimes late.'], 1),
+      mc('always', ['Always we stop work at 6.00.', 'We stop always work at 6.00.', 'We always stop work at 6.00.'], 2),
+      mc('never', ['She never goes out on Sundays.', 'Never she goes out on Sundays.', 'She goes never out on Sundays.'], 0),
+      mc('always', ['She always is late.', "She's always late.", "Always she's late."], 1, { why: 'After am / is / are.' }),
+      mc('never', ["I'm never hungry in the morning.", "I never am hungry in the morning.", "Never I'm hungry in the morning."], 0),
+      mc('usually', ['I walk usually to school.', 'Usually I walk to school.', 'I walk to usually school.'], 1, {
+        why: 'Usually and sometimes can also go at the beginning.',
+      }),
+      mc('often', ['I eat often in a restaurant.', 'I often eat in a restaurant.', 'Often I eat in restaurant.'], 1),
     ],
   },
   {
     id: 'hw-gr33',
     title: 'like / love + -ing',
-    task: 'Grammar Reference 3.3. Choose the correct form.',
+    task: 'Choose the form.',
     pages: 'page 136',
     tip: (
       <>
@@ -142,7 +137,7 @@ export const HOMEWORK: SectionData[] = [
   {
     id: 'hw-prep',
     title: 'Prepositions',
-    task: 'Grammar Reference, Unit 3. Choose the correct preposition.',
+    task: 'Choose the preposition.',
     pages: 'page 136',
     kind: 'mc',
     items: [

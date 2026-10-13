@@ -1,34 +1,49 @@
 /** "Fit & Well" ariza formasi (Writing Unit 3, 106-bet): maydonlar, Lena namunasi, tekshirish va matn yasash */
 
+/**
+ * Formadagi maydon. O'quvchi minimal yozadi (Z avlodi uchun): faqat ism va familiya klaviaturada,
+ * qolgani bosish bilan — sana kalendardan, millat/shahar tugmalardan, imzo bitta tugma.
+ */
 type Field = {
   key: string;
   label: string;
-  /** Bo'sh bo'lsa chiqadigan xabar; yo'q bo'lsa — maydon ixtiyoriy */
+  /** Bo'sh bo'lsa chiqadigan xabar (to'ldirish shart) */
   ask?: string;
-  /** BLOCK CAPITALS bilan yozilishi shart */
-  caps?: boolean;
-  /** dd/mm/yy ko'rinishidagi sana */
-  date?: boolean;
-  inputMode?: 'email' | 'tel' | 'numeric';
+  /** O'quvchi to'ldiradigan maydon; qolganlari faqat Lenaning formasida ko'rinadi */
+  input?: 'text' | 'date' | 'choice' | 'sign' | 'auto';
+  /** `choice` uchun tayyor variantlar (o'zi ham yozishi mumkin) */
+  choices?: string[];
 };
 
 export const FIELDS = [
-  { key: 'first', label: 'First Name', ask: 'Write your first name.', caps: true },
-  { key: 'surname', label: 'Surname', ask: 'Write your surname.', caps: true },
-  { key: 'dob', label: 'Date of birth', ask: 'Write your date of birth.', date: true, inputMode: 'numeric' },
-  { key: 'nationality', label: 'Nationality', ask: 'Write your nationality.', caps: true },
-  { key: 'address', label: 'Address', caps: true },
-  { key: 'town', label: 'Town/City', ask: 'Write your town or city.', caps: true },
-  { key: 'postcode', label: 'Post Code', caps: true },
-  { key: 'email', label: 'Email address', inputMode: 'email' },
-  { key: 'daytime', label: 'Daytime telephone', inputMode: 'tel' },
-  { key: 'mobile', label: 'Mobile phone', inputMode: 'tel' },
+  { key: 'first', label: 'First Name', ask: 'Write your first name.', input: 'text' },
+  { key: 'surname', label: 'Surname', ask: 'Write your surname.', input: 'text' },
+  { key: 'dob', label: 'Date of birth', ask: 'Choose your date of birth.', input: 'date' },
+  {
+    key: 'nationality',
+    label: 'Nationality',
+    ask: 'Choose your nationality.',
+    input: 'choice',
+    choices: ['UZBEK', 'RUSSIAN', 'KAZAKH', 'TAJIK', 'KYRGYZ'],
+  },
+  { key: 'address', label: 'Address' },
+  {
+    key: 'town',
+    label: 'Town/City',
+    ask: 'Choose your town or city.',
+    input: 'choice',
+    choices: ['TASHKENT', 'SAMARKAND', 'BUKHARA', 'NAMANGAN', 'ANDIJAN', 'FERGANA'],
+  },
+  { key: 'postcode', label: 'Post Code' },
+  { key: 'email', label: 'Email address' },
+  { key: 'daytime', label: 'Daytime telephone' },
+  { key: 'mobile', label: 'Mobile phone' },
 ] as const satisfies readonly Field[];
 
-/** Forma oxiridagi maydonlar: imzo oddiy yozuvda, sana — dd/mm/yy */
+/** Forma oxiri: imzo — bitta tugma, sana — bugungi kun (o'zi qo'yiladi) */
 export const FOOT_FIELDS = [
-  { key: 'signature', label: 'Signature', ask: 'Sign the form: write your name in the Signature box.' },
-  { key: 'date', label: 'Date', ask: 'Write the date.', date: true, inputMode: 'numeric' },
+  { key: 'signature', label: 'Signature', ask: 'Tap “Sign”.', input: 'sign' },
+  { key: 'date', label: 'Date', input: 'auto' },
 ] as const satisfies readonly Field[];
 
 export type FieldDef = Field;
@@ -77,6 +92,8 @@ export const emptyForm = (today = new Date()): FormData => ({
   date: formatDate(today),
 });
 
+const nice = (s: string) => s.trim().toLowerCase().replace(/(^|[\s-])\p{L}/gu, (c) => c.toUpperCase());
+
 const DATE = /^(\d{1,2})\/(\d{1,2})\/(\d{2})$/;
 
 /** "02/07/84" → 1984-07-02; yil kelajakda bo'lib qolsa — 1900-yillar */
@@ -89,20 +106,19 @@ export function parseDate(text: string, today = new Date()): Date | null {
   return new Date(year, month - 1, day);
 }
 
-/** Tekshirish: bo'sh maydon, BLOCK CAPITALS, sana ko'rinishi, title, belgilangan qiziqish */
+/** Imzo: "AZIZ KARIMOV" → "Aziz Karimov" */
+export const signatureOf = (f: FormData) => `${nice(f.first)} ${nice(f.surname)}`.trim();
+
+/** Tekshirish: bo'sh qolgan majburiy maydonlar, title, belgilangan qiziqish */
 export function checkForm(f: FormData): string[] {
   const out: string[] = [];
   for (const field of [...FIELDS, ...FOOT_FIELDS] as readonly Field[]) {
     const v = f[field.key as FieldKey].trim();
-    if (!v) {
-      if (field.ask) out.push(field.ask);
-      continue;
-    }
-    if (field.caps && v !== v.toUpperCase()) out.push(`${field.label}: write it in BLOCK CAPITALS, LIKE THIS.`);
-    if (field.date && !parseDate(v)) out.push(`${field.label}: write it like this: 02/07/84 (dd/mm/yy).`);
+    // Sana uchta tanlovdan yig'iladi — chala bo'lsa ("15//") ham to'ldirilmagan hisoblanadi
+    if (field.ask && (!v || (field.input === 'date' && !parseDate(v)))) out.push(field.ask);
   }
-  if (!f.title) out.push('Title: underline Mr, Mrs, Miss or Ms.');
-  if (!f.interests.length) out.push('Tick (✓) at least one interest.');
+  if (!f.title) out.push('Tap Mr, Mrs, Miss or Ms.');
+  if (!f.interests.length) out.push('Tick (✓) one or more sports.');
   return out;
 }
 
@@ -119,7 +135,6 @@ const PHRASE: Record<string, string> = {
 
 const list = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
 const likes = (xs: string[]) => list(xs.map((x) => PHRASE[x] ?? x.toLowerCase()));
-const nice = (s: string) => s.trim().toLowerCase().replace(/(^|[\s-])\p{L}/gu, (c) => c.toUpperCase());
 
 /** To'g'ri to'ldirilgan formadan "o'zim haqimda" matni va Lena bilan solishtirish */
 export function describe(f: FormData, today = new Date()): string[] {

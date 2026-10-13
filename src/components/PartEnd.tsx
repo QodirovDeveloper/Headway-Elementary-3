@@ -20,10 +20,10 @@ export function PartEnd({ s, answers, nextLabel, onNext, onRetry }: Props) {
   const mistakes = section.items.map((item, i) => ({ item, i })).filter(({ i }) => a[i] && !a[i].ok);
   const msg =
     st.got === st.total
-      ? 'Perfect! No mistakes.'
+      ? 'Perfect!'
       : st.got / st.total >= 0.7
-        ? 'Good work! Look at your mistakes below.'
-        : 'Read the mistakes below, then try this part again.';
+        ? 'Good work! Check your mistakes.'
+        : 'Check your mistakes and try again.';
 
   return (
     <>
