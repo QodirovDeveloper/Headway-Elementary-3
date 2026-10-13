@@ -90,7 +90,7 @@ function Prompt({ text, filled }: { text: string; filled?: { text: string; ok: b
   const [before, after] = text.split('___');
   const blankColor = filled ? (filled.ok ? 'border-ok text-ok' : 'border-bad text-bad') : 'border-accent';
   return (
-    <div className="mt-1.5 mb-5 font-display text-[clamp(23px,6.4vw,28px)] leading-snug font-bold text-pretty">
+    <div id="prompt" className="mt-1.5 mb-5 font-display text-[clamp(23px,6.4vw,28px)] leading-snug font-bold text-pretty">
       {before}
       {after !== undefined && (
         <>

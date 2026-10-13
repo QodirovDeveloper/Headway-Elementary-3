@@ -1,7 +1,7 @@
 /** Tepada doim turadi: "All parts" tugmasi, umumiy progress va ball */
 export function TopBar({ done, got, total, onMenu }: { done: number; got: number; total: number; onMenu?: () => void }) {
   return (
-    <div className="safe-top sticky z-10 -mx-4 flex items-center gap-3 border-b border-line bg-paper px-4 py-2.5">
+    <div id="topbar" className="safe-top sticky z-10 -mx-4 flex items-center gap-3 border-b border-line bg-paper px-4 py-2.5">
       {onMenu && (
         <button
           type="button"

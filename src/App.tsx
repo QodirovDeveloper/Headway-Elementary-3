@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { Home } from './components/Home';
 import { PartEnd } from './components/PartEnd';
 import { Question } from './components/Question';
@@ -10,16 +10,30 @@ import { continueView, groupStats, nextPart, openSection, viewGroup } from './li
 import { useAnswers } from './store';
 import type { View } from './types';
 
+/** Savol matnining ekrandagi o'rni; tepadagi panel ostida yashirinib qolmasin */
+function promptTop(): number | null {
+  const prompt = document.getElementById('prompt');
+  if (!prompt) return null;
+  const barBottom = document.getElementById('topbar')?.getBoundingClientRect().bottom ?? 0;
+  return Math.max(prompt.getBoundingClientRect().top, barBottom + 12);
+}
+
 export default function App() {
   const { answers, answer, resetSection, resetAll } = useAnswers();
   const [view, setView] = useState<View>({ name: 'home' });
   const [figureOpen, setFigureOpen] = useState(true);
   const group = viewGroup(view);
   const { done, got, total } = groupStats(answers, group);
+  /** "Continue" bosilganda savol matni ekranda qayerda edi — keyingi savol ham shu joyda chiqadi */
+  const keepPromptAt = useRef<number | null>(null);
 
-  // Yangi ekran doim tepadan boshlansin
-  useEffect(() => {
-    window.scrollTo(0, 0);
+  // Bir qism ichida savoldan savolga — o'quvchi turgan joy saqlanadi; boshqa ekranlar tepadan boshlanadi
+  useLayoutEffect(() => {
+    const top = keepPromptAt.current;
+    keepPromptAt.current = null;
+    const prompt = document.getElementById('prompt');
+    if (top !== null && prompt) window.scrollBy(0, prompt.getBoundingClientRect().top - top);
+    else window.scrollTo(0, 0);
   }, [view]);
 
   const pick = (s: number) => setView(openSection(s, answers));
@@ -49,13 +63,12 @@ export default function App() {
             i={view.i}
             answers={answers}
             onAnswer={(a) => answer(SECTIONS[view.s].id, view.i, a)}
-            onNext={() =>
-              setView(
-                view.i + 1 < SECTIONS[view.s].items.length
-                  ? { name: 'question', s: view.s, i: view.i + 1 }
-                  : { name: 'partEnd', s: view.s },
-              )
-            }
+            onNext={() => {
+              if (view.i + 1 < SECTIONS[view.s].items.length) {
+                keepPromptAt.current = promptTop();
+                setView({ name: 'question', s: view.s, i: view.i + 1 });
+              } else setView({ name: 'partEnd', s: view.s });
+            }}
             figureOpen={figureOpen}
             onFigureToggle={setFigureOpen}
           />
